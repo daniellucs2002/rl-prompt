@@ -14,6 +14,8 @@ from fsc_helpers import (PromptedClassificationRewardConfig,
                          make_prompted_classification_reward,
                          make_few_shot_classification_dataset)
 
+os.environ["http_proxy"]="http://127.0.0.1:7890"
+os.environ["https_proxy"]="http://127.0.0.1:7890"
 
 # Compose default config
 config_list = [PromptedClassificationRewardConfig,

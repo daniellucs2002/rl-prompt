@@ -9,6 +9,9 @@ from fsc_helpers import (make_few_shot_classification_dataset,
                          get_dataset_verbalizers)
 from fsc_evaluator import PromptedClassificationEvaluator
 
+import os
+os.environ["http_proxy"]="http://127.0.0.1:7890"
+os.environ["https_proxy"]="http://127.0.0.1:7890"
 
 @hydra.main(version_base=None, config_path="./", config_name="eval_config")
 def main(config: "DictConfig"):

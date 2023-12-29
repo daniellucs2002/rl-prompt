@@ -118,9 +118,11 @@ class SQLModule(BaseModule):
                                       'inference is supported now')
 
         if mode == ForwardMode.SQL_ON:
+            # search and generate the prompts (output_tokens)
             (logits, logits_, output_tokens, output_ids, sequence_lengths) = \
                 self._decode_sampling(batch=batch)
 
+        # do the inference in the Task LM based on 'prompt+input' (output_tokens+batch)
         raw_rewards, rewards_log = \
             self.compute_rewards(batch=batch, 
                                   output_tokens=output_tokens,
@@ -196,7 +198,7 @@ class SQLModule(BaseModule):
 
         return (outputs['sample_logits'].contiguous(),
                 outputs_['sample_logits'].contiguous(),
-                outputs['sample_tokens'],
+                outputs['sample_tokens'],  # prompt tokens generated for the current epoch
                 outputs['sample_ids'].contiguous(),
                 outputs['sample_lengths'].contiguous())
 

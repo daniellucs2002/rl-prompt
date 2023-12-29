@@ -31,7 +31,8 @@ class PromptedClassificationReward(BaseReward):
             self.is_mask_lm = True if 'bert' in self.task_lm else False
         else:
             self.is_mask_lm = is_mask_lm  
-        print('Task LM:', self.task_lm)
+        print('Task LM:', self.task_lm)  # Task LM object defined in the Reward class
+        # and they are self._tokenizer and self._generator
         if self.is_mask_lm:
             assert self.task_lm in SUPPORTED_MASK_LMS
             self._tokenizer = AutoTokenizer.from_pretrained(self.task_lm)
@@ -71,7 +72,7 @@ class PromptedClassificationReward(BaseReward):
             template = "{sentence_1} {prompt}"
         return template
 
-    def forward(
+    def forward(  # invoked by 'self.compute_rewards(...)'
         self,
         source_texts: List[str],
         class_labels: List[int],

@@ -102,12 +102,17 @@ class Trainer:
         step: int,
         batch: Dict[str, Any]
     ) -> Dict[str, Any]:
+
+        # print(batch)
+        # {'source_texts': ['',''...], 'class_labels': tensor([0,1...])}
+
         model = self.module.train()
         model._pre_steps(step)
 
-        loss, batch_log = model(batch)
+        loss, batch_log = model(batch)  # feed 'prompt+input' into Task LM, get rewards, as well as loss
+        # call forward function in sql_module.py
         loss.backward()
-        self.train_op()
+        self.train_op()  # update the MLP weights in the policy network
 
         return batch_log
 
@@ -142,10 +147,10 @@ class Trainer:
         if self.max_train_steps < 0:
             total_train_epochs = self.num_train_epochs
         else:
-            num_batches_per_epoch = len(train_dataloader)
+            num_batches_per_epoch = len(train_dataloader)  # 1
             total_train_epochs = \
                 (self.max_train_steps // num_batches_per_epoch
-                 + int(self.max_train_steps % num_batches_per_epoch > 0))
+                 + int(self.max_train_steps % num_batches_per_epoch > 0))  # 2
 
         # Determine whether to evaluate by epoch or steps
         eval_by_steps = self.eval_steps > 0
